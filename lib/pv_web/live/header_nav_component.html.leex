@@ -1,0 +1,65 @@
+<div class="h-14 border-b-2 flex fixed w-full bg-white z-50">
+  <header class="flex items-center container mx-auto max-w-full md:w-11/12 2xl:w-6/12">
+    <%= live_patch to: Routes.page_path(@socket, :index) do %>
+      <h1 class="text-2xl font-bold italic">#InstagramClone</h1>
+    <% end %>
+    <nav class="w-4/5 relative">
+      <ul x-data="{open: false}" class="flex justify-end">
+        <%= if @current_user do %>
+          <li class="w-7 h-7 text-gray-600">
+            <%= live_patch to: Routes.page_path(@socket, :index) do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            <% end %>
+          </li>
+          <li class="w-7 h-7 ml-6 text-gray-600">
+            <%= live_patch to: "" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            <% end %>
+          </li>
+          <li
+            @click="open = true"
+            class="w-7 h-7 ml-6 shadow-md rounded-full overflow-hidden cursor-pointer"
+          >
+            <div class="object-center text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none">
+                 <path stroke-linecap="round" stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                 <circle stroke-width="2" cx="12" cy="7" r="4"></circle>
+                 <path stroke-width="2" d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+              </svg>
+            </div>
+          </li>
+          <ul class="absolute top-14 w-56 bg-white shadow-md text-sm -right-8"
+              x-show="open"
+              @click.away="open = false"
+              x-transition:enter="transition ease-out duration-200"
+              x-transition:enter-start="opacity-0 transform scale-90"
+              x-transition:enter-end="opacity-100 transform scale-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100 transform scale-100"
+              x-transition:leave-end="opacity-0 transform scale-90"
+            >
+              <%= live_patch to: "" do %>
+                <li class="py-2 px-4 hover:bg-gray-50">Profile</li>
+              <% end %>
+              <li class="py-2 px-4 hover:bg-gray-50">Saved</li>
+              <%= live_patch to: "" do %>
+                <li class="py-2 px-4 hover:bg-gray-50">Settings</li>
+              <% end %>
+              <li class="border-t-2 py-2 px-4 hover:bg-gray-50"><%= link "Log Out", to: Routes.user_session_path(@socket, :delete), method: :delete %></li>
+            </ul>
+        <% else %>
+          <li>
+            <%= link "Log In", to: Routes.user_session_path(@socket, :new), class: "md:w-24 py-1 px-3 border-none shadow rounded text-gray-50 hover:bg-blue-600 bg-blue-500 font-semibold" %>
+          </li>
+          <li>
+            <%= link "Sign Up", to: Routes.user_registration_path(@socket, :new), class: "md:w-24 py-1 px-3 border-none text-blue-500 hover:text-blue-600 font-semibold" %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  </header>
+</div>

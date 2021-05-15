@@ -1,4 +1,6 @@
 defmodule PvWeb.UserAuth do
+  @pubsub_topic "user_updates"
+
   import Plug.Conn
   import Phoenix.Controller
 
@@ -65,6 +67,8 @@ defmodule PvWeb.UserAuth do
     |> clear_session()
   end
 
+  def pubsub_topic, do: @pubsub_topic
+
   @doc """
   Logs the user out.
 
@@ -72,7 +76,7 @@ defmodule PvWeb.UserAuth do
   """
   def log_out_user(conn) do
     user_token = get_session(conn, :user_token)
-    user_token && Accounts.delete_session_token(user_token)
+    Accounts.log_out_user(user_token)
 
     if live_socket_id = get_session(conn, :live_socket_id) do
       PvWeb.Endpoint.broadcast(live_socket_id, "disconnect", %{})

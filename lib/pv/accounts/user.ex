@@ -6,6 +6,8 @@ defmodule Pv.Accounts.User do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "users" do
+    field :full_name, :string
+    field :apartment_number, :integer
     field :email, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
@@ -33,7 +35,9 @@ defmodule Pv.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :full_name, :apartment_number])
+    |> validate_required([:full_name, :apartment_number])
+    |> validate_length(:full_name, min: 4, max: 30)
     |> validate_email()
     |> validate_password(opts)
   end
@@ -50,7 +54,7 @@ defmodule Pv.Accounts.User do
   defp validate_password(changeset, opts) do
     changeset
     |> validate_required([:password])
-    |> validate_length(:password, min: 12, max: 80)
+    |> validate_length(:password, min: 3, max: 80)
     # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")

@@ -6,6 +6,7 @@ defmodule Pv.Accounts do
   import Ecto.Query, warn: false
   alias Pv.Repo
   alias Pv.Accounts.{User, UserToken, UserNotifier}
+  alias PvWeb.UserAuth
 
   ## Database getters
 
@@ -236,6 +237,20 @@ defmodule Pv.Accounts do
   def delete_session_token(token) do
     Repo.delete_all(UserToken.token_and_context_query(token, "session"))
     :ok
+  end
+
+  def log_out_user(token) do
+    user = get_user_by_session_token(token)
+    Repo.delete_all(UserToken.user_and_contexts_query(user, :all))
+
+    PvWeb.Endpoint.broadcast_from(
+      self(),
+      UserAuth.pubsub_topic(),
+      "logout_user",
+      %{
+        user: user
+      }
+    )
   end
 
   ## Confirmation
