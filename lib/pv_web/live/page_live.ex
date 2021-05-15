@@ -3,15 +3,18 @@ defmodule PvWeb.PageLive do
 
   alias Pv.Accounts
   alias Pv.Accounts.User
+  alias Pv.Posts
 
   @impl true
   def mount(_params, session, socket) do
     socket = assign_defaults(session, socket)
     changeset = Accounts.change_user_registration(%User{})
+    posts = Posts.list_posts()
 
     {:ok,
      socket
      |> assign(changeset: changeset)
+     |> assign(posts: posts)
      |> assign(trigger_submit: false)}
   end
 
