@@ -21,6 +21,7 @@ defmodule Pv.Posts do
   """
   def list_posts do
     Repo.all(Post)
+    |> Repo.preload(:user)
   end
 
   @doc """
@@ -37,7 +38,10 @@ defmodule Pv.Posts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_post!(id), do: Repo.get!(Post, id)
+  def get_post!(id) do
+    Repo.get!(Post, id)
+    |> Repo.preload(:user)
+  end
 
   def get_post_by_slug(slug) do
     slug = String.downcase(slug)

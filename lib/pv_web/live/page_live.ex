@@ -9,7 +9,10 @@ defmodule PvWeb.PageLive do
   def mount(_params, session, socket) do
     socket = assign_defaults(session, socket)
     changeset = Accounts.change_user_registration(%User{})
-    posts = Posts.list_posts()
+
+    posts =
+      Posts.list_posts()
+      |> IO.inspect()
 
     {:ok,
      socket

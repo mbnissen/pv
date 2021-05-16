@@ -2,8 +2,9 @@
   <%= for post <- @posts do %>
     <h2 class="text-2xl font-bold"><%= post.title %></h2>
     <p><%= post.description %></p>
-    <span class="text-gray-400">
+    <span class="text-gray-400 text-sm">
       <%= Timex.to_datetime(post.inserted_at, "Europe/Copenhagen") |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}") %>
+      @ <%= post.user.full_name %>
     </span>
   <% end %>
 <% else %>
