@@ -24,6 +24,19 @@ defmodule Pv.Posts do
     |> Repo.preload(:user)
   end
 
+  def list_posts(page: page, per_page: per_page) do
+    Post
+    |> limit(^per_page)
+    |> offset(^((page - 1) * per_page))
+    |> order_by(desc: :id)
+    |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
+  def get_total_count() do
+    Repo.one(from p in Post, select: count(p.id))
+  end
+
   @doc """
   Gets a single post.
 

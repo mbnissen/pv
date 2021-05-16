@@ -1,14 +1,21 @@
 <%= if @current_user do %>
-  <%= for post <- @posts do %>
-    <div class="pb-3">
-      <h2 class="text-2xl font-bold py-2"><%= post.title %></h2>
-      <p><%= post.description %></p>
-      <div class="text-gray-500 text-sm py-2">
-        <%= Timex.to_datetime(post.inserted_at, "Europe/Copenhagen") |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}") %>
-        @ <%= post.user.full_name %>
+  <div id="posts" phx-update="append">
+    <%= for post <- @posts do %>
+      <div id="<%= post.id %>" class="pb-3">
+        <h2 class="text-2xl font-bold py-2"><%= post.title %></h2>
+        <p><%= post.description %></p>
+        <div class="text-gray-500 text-sm py-2">
+          <%= Timex.to_datetime(post.inserted_at, "Europe/Copenhagen") |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}") %>
+          @ <%= post.user.full_name %>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+  <div
+    id="posts-footer"
+    class="flex justify-center"
+    phx-hook="PostsScroll">
+  </div>
 <% else %>
   <%= live_component @socket, PvWeb.PageLiveComponent, changeset: @changeset, trigger_submit: @trigger_submit %>
 <% end %>
