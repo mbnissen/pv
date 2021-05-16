@@ -28,7 +28,7 @@ defmodule Pv.Posts do
     Post
     |> limit(^per_page)
     |> offset(^((page - 1) * per_page))
-    |> order_by(desc: :id)
+    |> order_by(desc: :inserted_at)
     |> Repo.all()
     |> Repo.preload(:user)
   end
