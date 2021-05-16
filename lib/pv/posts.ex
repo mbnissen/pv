@@ -39,6 +39,11 @@ defmodule Pv.Posts do
   """
   def get_post!(id), do: Repo.get!(Post, id)
 
+  def get_post_by_slug(slug) do
+    slug = String.downcase(slug)
+    Repo.get_by(Post, slug: slug)
+  end
+
   @doc """
   Creates a post.
 
@@ -53,6 +58,7 @@ defmodule Pv.Posts do
   """
   def create_post(attrs \\ %{}, user) do
     post = Ecto.build_assoc(user, :posts)
+
     changeset = Post.changeset(post, attrs)
     update_posts_count = from(u in User, where: u.id == ^user.id)
 

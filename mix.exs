@@ -47,6 +47,7 @@ defmodule Pv.MixProject do
       {:jason, "~> 1.0"},
       {:timex, "~> 3.6"},
       {:phx_gen_auth, "~> 0.7", only: [:dev], runtime: false},
+      {:slugger, "~> 0.3.0"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end

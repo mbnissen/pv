@@ -59,7 +59,9 @@ config :pv, PvWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"lib/pv_web/(live|views)/.*(ex)$",
+      ~r"lib/pv/.*(ex)$",
+      ~r"lib/pv_web/live/.*(ex)$",
+      ~r"lib/pv_web/views/.*(ex)$",
       ~r"lib/pv_web/templates/.*(eex)$"
     ]
   ]

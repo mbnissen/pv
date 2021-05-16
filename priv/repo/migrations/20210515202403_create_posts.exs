@@ -4,6 +4,7 @@ defmodule Pv.Repo.Migrations.CreatePosts do
   def change do
     create table(:posts, primary_key: false) do
       add :id, :binary_id, primary_key: true
+      add :slug, :string
       add :title, :string
       add :description, :text
       add :total_likes, :integer
@@ -14,5 +15,6 @@ defmodule Pv.Repo.Migrations.CreatePosts do
     end
 
     create index(:posts, [:user_id])
+    create unique_index(:posts, [:slug])
   end
 end
