@@ -2,7 +2,6 @@ defmodule Pv.Posts.Post do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Pv.Posts.Post
   alias Pv.Posts.Slugger
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -14,6 +13,7 @@ defmodule Pv.Posts.Post do
     field :title, :string
     field :slug, :string
     belongs_to :user, Pv.Accounts.User
+    has_many :comments, Pv.Posts.Comment
 
     timestamps()
   end

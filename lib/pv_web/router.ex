@@ -50,7 +50,8 @@ defmodule PvWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
-    live "/posts/new", PostLive.New
+    live "/posts/new", PostLive.PostNew
+    live "/posts/:slug", PostLive.PostShow
   end
 
   scope "/", PvWeb do

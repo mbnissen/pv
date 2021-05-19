@@ -14,6 +14,7 @@ defmodule Pv.Accounts.User do
     field :confirmed_at, :naive_datetime
     field :posts_count, :integer, default: 0
     has_many :posts, Pv.Posts.Post
+    has_many :comments, Pv.Posts.Comment
 
     timestamps()
   end

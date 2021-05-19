@@ -1,0 +1,64 @@
+<section class="flex">
+  <div class="w-full border-2 p-3 m-2">
+      <h2 class="text-2xl font-bold py-2"><%= @post.title %></h2>
+
+      <p class="text-gray-600 font-light"><%= @post.description %></p>
+
+      <div class="text-gray-500 text-sm py-2">
+        <%= Timex.to_datetime(@post.inserted_at, "Europe/Copenhagen") |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}") %>
+        @ <%= @post.user.full_name %>
+      </div>
+
+      <%= for comment <- @comments do %>
+        <div class="border-t-2 border-gray-100 p-3 mt-2">
+          <p class="text-gray-600 font-light"><%= comment.body %></p>
+          <div class="text-gray-500 text-sm py-2">
+            <%= Timex.to_datetime(@post.inserted_at, "Europe/Copenhagen") |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}") %>
+            @ <%= @post.user.full_name %>
+          </div>
+        </div>
+      <% end %>
+
+      <%= f = form_for @changeset, "#",
+        phx_submit: "save",
+        class: "flex items-center mt-3 border-t-2 border-gray-100",
+        x_data: "{
+          disableSubmit: true,
+          inputText: null,
+          displayCommentBtn: (refs) => {
+            refs.cbtn.classList.remove('opacity-30')
+            refs.cbtn.classList.remove('cursor-not-allowed')
+          },
+          disableCommentBtn: (refs) => {
+            refs.cbtn.classList.add('opacity-30')
+            refs.cbtn.classList.add('cursor-not-allowed')
+          }
+        }" %>
+        <div class="w-full">
+          <%= textarea f, :body,
+            class: "w-full border-0 focus:ring-transparent resize-none",
+            rows: 3,
+            placeholder: "Tilføj en kommentar...",
+            aria_label: "Tilføj en kommentar...",
+            autocorrect: "off",
+            autocomplete: "off",
+            x_model: "inputText",
+            "@input": "[
+              (inputText.length != 0) ? [disableSubmit = false, displayCommentBtn($refs)] : [disableSubmit = true, disableCommentBtn($refs)]
+            ]" %>
+          <div class="w-full p-3">
+            <%= error_tag f, :body, class: "text-red-700 text-sm" %>
+          </div>
+        </div>
+        <div>
+          <%= submit "Post",
+            phx_disable_with: "Posting...",
+            class: "text-light-blue-500 opacity-30 cursor-not-allowed font-bold p-3 text-sm focus:outline-none",
+            x_ref: "cbtn",
+            "@click": "inputText = null",
+            "x_bind:disabled": "disableSubmit" %>
+        </div>
+      </form>
+  </div>
+
+</section>

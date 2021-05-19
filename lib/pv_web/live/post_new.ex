@@ -1,4 +1,4 @@
-defmodule PvWeb.PostLive.New do
+defmodule PvWeb.PostLive.PostNew do
   use PvWeb, :live_view
 
   alias Pv.Posts.Post
